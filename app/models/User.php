@@ -9,18 +9,20 @@ class User {
 
    
     // Método para registrar um novo usuário
-    public function register($nome, $email,$senha){
+    public function register($nome, $email, $senha, $tipo, $status_produtor){
          //criptograva a senha antes de salvar 
          $senhaHash = password_hash($senha,PASSWORD_DEFAULT);
          // Prepara o SQL para inserir o usuário
-         $sql="INSERT INTO usuarios (nome, email, senha) VALUES (:nome, :email, :senha)";
+         $sql="INSERT INTO usuarios (nome, email, senha, tipo, status_produtor) VALUES (:nome, :email, :senha, :tipo, :status_produtor)";
             $stmt = $this->db->prepare($sql);
         
         // Executa o SQL com os dados
      return $stmt->execute([
-            ':nome' => $nome,
-            ':email' => $email,
-            ':senha' => $senhaHash
+        ':nome' => $nome,
+        ':email' => $email,
+        ':senha' => $senhaHash,
+        ':tipo' => $tipo,
+        ':status_produtor' => $status_produtor
         ]);
     }
     //Método para buscar usuário por email

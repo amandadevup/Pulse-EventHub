@@ -48,5 +48,14 @@ switch ($page) {
             echo 'ID do evento não informado!';
         }
         break;
+
+    case 'admin_produtores':
+    require_once __DIR__ . '/../app/controllers/AdminController.php';
+    (new AdminController())->listarProdutoresPendentes();
+    break;
+    case 'aprovar_produtor':
+    require_once __DIR__ . '/../app/controllers/AdminController.php';
+    (new AdminController())->aprovarProdutor();
+    break;
     // ...outros cases...
 }

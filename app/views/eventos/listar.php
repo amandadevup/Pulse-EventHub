@@ -23,11 +23,18 @@
                 <td><?php echo htmlspecialchars($evento['titulo']); ?></td>
                 <td><?php echo htmlspecialchars($evento['descricao']); ?></td>
                 <td><?php echo htmlspecialchars($evento['cidade']); ?></td>
-                <td><?php echo htmlspecialchars($evento['data_evento']); ?></td>
+                <td><?php echo htmlspecialchars($evento['data_evento']); ?></td> 
+
                 <td>
-                    <!-- Aqui vão os links para editar e deletar -->
-                    <a href="?page=evento_editar&id=<?php echo $evento['id']; ?>">Editar</a> |
-                    <a href="?page=evento_deletar&id=<?php echo $evento['id']; ?>" onclick="return confirm('Tem certeza que deseja deletar?')">Deletar</a>
+                    <?php if (
+                        isset($_SESSION['usuario_tipo'], $_SESSION['usuario_id']) &&
+                        $_SESSION['usuario_tipo'] === 'produtor' &&
+                        $_SESSION['status_produtor'] === 'aprovado' &&
+                        $_SESSION['usuario_id'] == $evento['usuario_id']
+                    ): ?>
+                        <a href="?page=evento_editar&id=<?php echo $evento['id']; ?>">Editar</a> |
+                        <a href="?page=evento_deletar&id=<?php echo $evento['id']; ?>" onclick="return confirm('Tem certeza que deseja deletar?')">Deletar</a>
+                    <?php endif; ?>
                 </td>
             </tr>
         <?php endforeach; ?>
@@ -36,5 +43,10 @@
     <?php endif; ?>
 </table>
 
-<!-- Link para criar novo evento -->
-<p><a href="?page=evento_criar">Novo Evento</a></p>
+<?php if (
+    isset($_SESSION['usuario_tipo']) &&
+    $_SESSION['usuario_tipo'] === 'produtor' &&
+    $_SESSION['status_produtor'] === 'aprovado'
+): ?>
+    <p><a href="?page=evento_criar">Novo Evento</a></p>
+<?php endif; ?>

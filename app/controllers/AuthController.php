@@ -7,18 +7,22 @@ class AuthController {
             $nome = $_POST['nome'] ?? '';
             $email = $_POST['email'] ?? '';
             $senha = $_POST['senha'] ?? '';
+            $tipo = $_POST['tipo'] ?? 'cliente';
+            $status_produtor = ($tipo === 'produtor') ? 'pendente' : null;
 
             $userModel = new User();
             $usuarioExistente = $userModel->findByEmail($email);
 
             if ($usuarioExistente) {
                 $mensagem = "E-mail já cadastrado!";
+                echo $mensagem;
+                return;
             } else {
-                $sucesso = $userModel->register($nome, $email, $senha);
+                $sucesso = $userModel->register($nome, $email, $senha, $tipo, $status_produtor);
                 $mensagem = $sucesso ? "Usuário cadastrado com sucesso!" : "Erro ao cadastrar usuário.";
+                echo $mensagem;
+                return;
             }
-
-            echo $mensagem;
         } else {
             // Aqui você pode incluir sua view de cadastro se quiser
             include __DIR__ . '/../views/auth/cadastro.php';
@@ -36,6 +40,15 @@ class AuthController {
             if ($usuario && password_verify($senha, $usuario['senha'])) {
                 $_SESSION['usuario_id'] = $usuario['id'];
                 $_SESSION['usuario_nome'] = $usuario['nome'];
+                $_SESSION['usuario_tipo'] = $usuario['tipo'];
+                $_SESSION['status_produtor'] = $usuario['status_produtor'];
+
+                // Se for produtor e não aprovado, bloqueia o acesso
+                if ($usuario['tipo'] === 'produtor' && $usuario['status_produtor'] !== 'aprovado') {
+                    echo "Sua conta de produtor ainda está aguardando aprovação.";
+                    exit;
+                }
+
                 header('Location: index.php?page=eventos');
                 exit;
             } else {
