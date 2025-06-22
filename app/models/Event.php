@@ -7,14 +7,14 @@ class Event {
     }
 
     // Criar novo evento
-    public function create($titulo, $descricao, $cidade, $data, $usuario_id) {
-        $sql = "INSERT INTO eventos (titulo, descricao, cidade, data, usuario_id) VALUES (:titulo, :descricao, :cidade, :data, :usuario_id)";
+    public function create($titulo, $descricao, $cidade, $data_evento, $usuario_id) {
+        $sql = "INSERT INTO eventos (titulo, descricao, cidade, data_evento, usuario_id) VALUES (:titulo, :descricao, :cidade, :data_evento, :usuario_id)";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([
             ':titulo' => $titulo,
             ':descricao' => $descricao,
             ':cidade' => $cidade,
-            ':data' => $data,
+            ':data_evento' => $data_evento,
             ':usuario_id' => $usuario_id
         ]);
     }
@@ -22,11 +22,11 @@ class Event {
     // Listar eventos (opcionalmente filtrando por cidade)
     public function list($cidade = null) {
         if ($cidade) {
-            $sql = "SELECT * FROM eventos WHERE cidade = :cidade ORDER BY data DESC";
+            $sql = "SELECT * FROM eventos WHERE cidade = :cidade ORDER BY data_evento DESC";
             $stmt = $this->db->prepare($sql);
             $stmt->execute([':cidade' => $cidade]);
         } else {
-            $sql = "SELECT * FROM eventos ORDER BY data DESC";
+            $sql = "SELECT * FROM eventos ORDER BY data_evento DESC";
             $stmt = $this->db->query($sql);
         }
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -41,14 +41,14 @@ class Event {
     }
 
     // Atualizar evento
-    public function update($id, $titulo, $descricao, $cidade, $data) {
-        $sql = "UPDATE eventos SET titulo = :titulo, descricao = :descricao, cidade = :cidade, data = :data WHERE id = :id";
+    public function update($id, $titulo, $descricao, $cidade, $data_evento) {
+        $sql = "UPDATE eventos SET titulo = :titulo, descricao = :descricao, cidade = :cidade, data_evento = :data_evento WHERE id = :id";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([
             ':titulo' => $titulo,
             ':descricao' => $descricao,
             ':cidade' => $cidade,
-            ':data' => $data,
+            ':data_evento' => $data_evento,
             ':id' => $id
         ]);
     }

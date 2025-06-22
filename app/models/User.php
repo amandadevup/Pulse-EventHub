@@ -13,7 +13,7 @@ class User {
          //criptograva a senha antes de salvar 
          $senhaHash = password_hash($senha,PASSWORD_DEFAULT);
          // Prepara o SQL para inserir o usuário
-         $sql="INSERT INTO users (nome, email, senha) VALUES (:nome, :email, :senha)";
+         $sql="INSERT INTO usuarios (nome, email, senha) VALUES (:nome, :email, :senha)";
             $stmt = $this->db->prepare($sql);
         
         // Executa o SQL com os dados
@@ -28,7 +28,7 @@ class User {
     public function findByEmail($email)
     {
         // Prepara o SQL para buscar o usuário pelo email
-        $sql = "SELECT * FROM users WHERE email = :email";
+        $sql = "SELECT * FROM usuarios WHERE email = :email";
         $stmt = $this->db->prepare($sql);
         
         // Executa a query

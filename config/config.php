@@ -1,10 +1,8 @@
 <?php
-// Configurações do banco de dados
-const DB_HOST = 'localhost';
-const DB_NAME = 'minipulse';
-const DB_USER = 'root';
-const DB_PASS = '';
-
+define('DB_HOST', 'localhost:3307');
+define('DB_NAME', 'minipulse');
+define('DB_USER', 'root');
+define('DB_PASS', '');
 // Inicia sessão
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
