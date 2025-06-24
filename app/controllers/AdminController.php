@@ -3,7 +3,8 @@ class AdminController {
     public function listarProdutoresPendentes() {
         $db = Database::getInstance()->getConnection();
         $pendentes = $db->query("SELECT * FROM usuarios WHERE tipo='produtor' AND status_produtor='pendente'")->fetchAll(PDO::FETCH_ASSOC);
-        require __DIR__ . '/../views/admin_produtores.php';
+        // Torna $pendentes disponível na view
+        include __DIR__ . '/../views/admin_produtores.php';
     }
 
     public function aprovarProdutor() {

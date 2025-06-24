@@ -19,12 +19,18 @@ class AuthController {
                 return;
             } else {
                 $sucesso = $userModel->register($nome, $email, $senha, $tipo, $status_produtor);
-                $mensagem = $sucesso ? "Usuário cadastrado com sucesso!" : "Erro ao cadastrar usuário.";
-                echo $mensagem;
-                return;
+                if ($sucesso) {
+                    $_SESSION['mensagem_sucesso'] = "Usuário cadastrado com sucesso!";
+                    header('Location: ?page=login');
+                    exit;
+                } else {
+                    $mensagem = "Erro ao cadastrar usuário.";
+                    echo $mensagem;
+                    return;
+                }
             }
         } else {
-            // Aqui você pode incluir sua view de cadastro se quiser
+            // Exibe a view de cadastro
             include __DIR__ . '/../views/auth/cadastro.php';
         }
     }
@@ -45,7 +51,8 @@ class AuthController {
 
                 // Se for produtor e não aprovado, bloqueia o acesso
                 if ($usuario['tipo'] === 'produtor' && $usuario['status_produtor'] !== 'aprovado') {
-                    echo "Sua conta de produtor ainda está aguardando aprovação.";
+                    $_SESSION['mensagem_erro'] = "Sua conta está aguardando aprovação. Assim que for aprovada, você poderá adicionar seus eventos.";
+                    header('Location: ?page=eventos');
                     exit;
                 }
 
@@ -55,7 +62,7 @@ class AuthController {
                 echo "E-mail ou senha inválidos!";
             }
         } else {
-            // Aqui você pode incluir sua view de login se quiser
+            // Exibe a view de login
             include __DIR__ . '/../views/auth/login.php';
         }
     }

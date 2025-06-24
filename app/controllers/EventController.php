@@ -5,6 +5,11 @@ require_once __DIR__ . '/../models/Event.php';
 class EventController{
     // Lista todos os eventos, com opção de filtro por cidade
     public function list(){
+        // Inicia a sessão se necessário
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
         $eventModel = new Event();
         $cidade = isset($_GET['cidade']) ? $_GET['cidade'] : null;
         $eventos = $eventModel->list($cidade);
@@ -14,11 +19,17 @@ class EventController{
 
     // Exibe o formulário para criar um novo evento
     public function createForm(){
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
         require_once __DIR__ . '/../views/eventos/form.php';
     }
 
     // Processa o formulário e salva um novo evento no banco
     public function create (){
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
         // Permissão: só produtor aprovado pode criar
         if ($_SESSION['usuario_tipo'] !== 'produtor' || $_SESSION['status_produtor'] !== 'aprovado') {
             echo "Acesso negado.";
@@ -46,6 +57,9 @@ class EventController{
 
     // Exibe o formulário para editar um evento existente
     public function editForm($id){
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
         $eventModel = new Event();
         $evento = $eventModel->findById($id);
 
@@ -59,6 +73,9 @@ class EventController{
 
     // Processa o formulário e atualiza o evento no banco
     public function update($id){
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
         // Permissão: só produtor aprovado pode atualizar
         if ($_SESSION['usuario_tipo'] !== 'produtor' || $_SESSION['status_produtor'] !== 'aprovado') {
             echo "Acesso negado.";
@@ -91,6 +108,9 @@ class EventController{
 
     // Deleta um evento do banco de dados
     public function delete($id){
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
         // Permissão: só produtor aprovado pode deletar
         if ($_SESSION['usuario_tipo'] !== 'produtor' || $_SESSION['status_produtor'] !== 'aprovado') {
             echo "Acesso negado.";
